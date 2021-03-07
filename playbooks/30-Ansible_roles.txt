@@ -1,0 +1,84 @@
+Ansible Roles?
+
+Ansible: configuration management and deployment 
+
+Playbook reusability to avoid writing same playbooks over and over again.
+
+import_tasks? 
+  Hard to manage and reuse if you have files, templates, vars defined for your environments. 
+  
+Ansible Role bundles all external reusable tasks with dependencies like vars, handlers, files, templates and etc. 
+
+Make it easy and fast to share code and workload within teams in the company. 
+
+
+npm install mysql 
+pip install boto3
+
+ansible-galaxy install roleNameFromAnsibleGalaxy
+
+ansible-galaxy install -r ./requirements.yml
+
+ansible-galaxy init role_name
+
+
+1. define role location in the ansible.cf file 
+[defaults]
+roles_path = ./roles
+2. install/download roles 
+3. import with module as Task 
+tasks:
+- import_role:
+    name: nameGoesHere
+    vars: {var1:val1, ...}
+      
+      or
+hosts: all
+roles:
+- names: nameGoesHere
+  var1: val1
+
+
+roles-example/
+├── defaults
+│   └── main.yml
+├── files
+├── handlers
+│   └── main.yml
+├── meta
+│   └── main.yml
+├── README.md
+├── tasks
+│   └── main.yml
+├── templates
+├── tests
+│   ├── inventory
+│   └── test.yml
+└── vars
+    └── main.yml
+
+# Resource: https://blog.knoldus.com/ansible-roles-directory-structure/
+
+Defaults:
+The defaults directory is for defining the variable defaults. The variables in default have the lowest priority thus becoming easy to override. If definition of a variable is nowhere else, the variable in defaults/main.yml will be used.
+
+Files:
+We use the files directory to add files that are needed by provisioning machine, without modification. Mostly, we use copy task for referencing files in the files directory. The most interesting part about this is that Ansible does not require a path for resources stored in files directory when working in the role.
+
+Handlers:
+The handlers directory is used for storing Ansible handlers. Handlers are tasks that may be flagged during a play to run at the play’s completion. We can have as many and as few handlers as we need.
+
+Meta:
+We use the meta directory to store authorship information which is useful if we choose to publish our role on galaxy.ansible.com. The metadata of an Ansible role consists of author, supported platforms, and dependencies.
+
+Tasks:
+The task directory is where we write most of our roles which includes all the tasks our role will perform. We write each series of tasks in a separate file and include them into the main.yml file in the tasks directory.
+
+Templates:
+We use the template directory to also add files to our machine(similar to files directory). Only difference between template and files directories is that the template directory supports alteration (modification). Jinja2 language to used to create these alteration. Most software configuration files become templates.
+
+Tests:
+We can use the tests directory if we have built and automated testing process around our role. This directory contains a sample inventory and a test.yml file.
+
+Vars:
+This is where we create variable files that define necessary variables for our role. The variables defined in this directory are meant for role internal use only. Also, it is a good idea to namespace our role variable names, to prevent potential naming conflicts with variables outside of our role.

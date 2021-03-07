@@ -1,0 +1,82 @@
+Static vs Dynamic IPs?
+
+
+
+Dynamic Inventory documentation:      https://docs.ansible.com/ansible/2.8/user_guide/intro_dynamic_inventory.html#inventory-script-example-aws-ec2 
+pip installation documentation:       https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install-linux.html
+
+
+1. Download ec2.py and ec2.ini files to your ansible location.
+
+wget https://raw.githubusercontent.com/ansible/ansible/stable-2.8/contrib/inventory/ec2.py
+wget https://raw.githubusercontent.com/ansible/ansible/stable-2.8/contrib/inventory/ec2.ini
+chmod +x ec2.py
+
+2. Ensure you have pip installed
+pip --version 
+python --version
+
+3. Download pip installation package 
+cd
+curl -O https://bootstrap.pypa.io/2.7/get-pip.py
+ls
+python get-pip.py
+pip --version
+
+4. Add pip installation to your path
+ll -a
+echo $SHELL
+echo $PATH
+export PATH=/home/ansibleadmin/.local/bin:$PATH
+echo $PATH
+source ~/get-pip.py
+pip --version
+
+5. install boto
+pip install boto
+
+6. run python ec2.py script
+./ec2.py
+
+7. Add iam role to your ansible engine with full EC2 permissions
+
+8. run python script again
+./ec2.py
+
+9. set elasticache = False in ec2.ini file
+
+10. run python script and now you can see everything from your account. 
+
+11. confirm that you can ping all ec2s from your aws account with ansible cli 
+ansible -i ec2.py ec2 -m ping
+
+12. Create another ec2 with amazon linux 2 ami and wait till it is running. 
+
+13. Now, try to ping all ec2s including the new one. It will give you permission denied error for the newly added ec2. 
+
+14. Create ami from client nodes and now create a new EC2 using this ami.
+
+15. test ansible ping again. now you should be able to ping all ec2s including the new one. 
+
+16. add Environment:web to node1 and node2 clients, and Environment:db to node3 client.
+
+17. Use python script to build your custom inventory from dynamic inventory you get from ansible cli. 
+
+18. check python location:  which python 
+
+19. create python script on VS Code.
+
+20. run the script on ansible engine 
+
+21. install boto3 using: pip install boto3
+
+22. Finish up boto3 automation to get ec2s based on tags. 
+
+23. now run ansible cli to target specific group of ec2s from your custom inventory file.
+ansible -i custom_dynamic_inventory.py db --list-hosts 
+ansible -i custom_dynamic_inventory.py web --list-hosts
+ansible -i custom_dynamic_inventory.py all --list-hosts
+
+
+
+
